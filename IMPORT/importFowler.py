@@ -39,13 +39,15 @@ connection = pymysql.connect(host=HOSTNAME,
                              cursorclass=pymysql.cursors.DictCursor)
 
 #Enter all the presons into the database
-f = open("DATA/persons.csv", 'rt')
+f = open("../DATA/persons.csv", 'rt')
 try: 
 	reader = csv.reader(f)
 	header = reader.next()
 
 	for row in reader:
-		executeSQL("INSERT INTO `Person` (`name`, `gender`, `birthdate`, `studentnr`) VALUES ('" + str(row[1]) + "', " + row[2] + ", '" + str(row[3]) + "', " + row[4] + ");")
+		sql = "INSERT INTO `Person` (`name`, `gender`, `birthdate`, `studentnr`) VALUES ('" + str(row[1]) + "', " + row[2] + ", '" + str(row[3]) + "', " + row[4] + ");"
+		print sql
+		executeSQL(sql)
 	
 finally: 
 	f.close()
@@ -60,7 +62,7 @@ PHENOMENON_TYPE = getLastId()
 
 for filename in glob.glob('../DATA/bp*'):
 
-	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[1])
+	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
 
 	f = open(filename, 'rt')
@@ -76,27 +78,36 @@ for filename in glob.glob('../DATA/bp*'):
 			OBSERVATION_ID = getLastId()
 
 			######################################
+			# Insert the quantities of the measurements
+			######################################
+			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
+			print sql
+			executeSQL(sql)
+			QUANTITY_ID = getLastId()
+
+			######################################
 			# Create an Measurement for binding Quantity to it
 			######################################
-			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + "'" + str(row[0]) + "');"
-			print sql
-			executeSQL(sql)
-			MEASUREMENT_ID = getLastId()
-
-			######################################
-			# Insert the quantities of the measurements
-			######################################
-			sql = "INSERT INTO `Quantity` (`value`,`unit`,`Measurement_idMeasurement`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "'," + str(MEASUREMENT_ID) + ");"
+			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
 			print sql
 			executeSQL(sql)
 
 			######################################
 			# Insert the quantities of the measurements
 			######################################
-			sql = "INSERT INTO `Quantity` (`value`,`unit`,`Measurement_idMeasurement`) VALUES ('" + str(row[2]) + "','" + str(header[2]) + "'," + str(MEASUREMENT_ID) + ");"
+			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[2]) + "','" + str(header[2]) + "');"
+			print sql
+			executeSQL(sql)
+			QUANTITY_ID = getLastId()
+
+			######################################
+			# Create an Measurement for binding Quantity to it
+			######################################
+			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
 			print sql
 			executeSQL(sql)
 
+			
 	finally: 
 		f.close()
 
@@ -110,7 +121,7 @@ PHENOMENON_TYPE = getLastId()
 
 for filename in glob.glob('../DATA/hr*'):
 
-	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[1])
+	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
 
 	f = open(filename, 'rt')
@@ -126,19 +137,20 @@ for filename in glob.glob('../DATA/hr*'):
 			OBSERVATION_ID = getLastId()
 
 			######################################
-			# Create an Measurement for binding Quantity to it
-			######################################
-			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + "'" + str(row[0]) + "');"
-			print sql
-			executeSQL(sql)
-			MEASUREMENT_ID = getLastId()
-
-			######################################
 			# Insert the quantities of the measurements
 			######################################
-			sql = "INSERT INTO `Quantity` (`value`,`unit`,`Measurement_idMeasurement`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "'," + str(MEASUREMENT_ID) + ");"
+			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
 			print sql
 			executeSQL(sql)
+			QUANTITY_ID = getLastId()
+
+			######################################
+			# Create an Measurement for binding Quantity to it
+			######################################
+			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
+			print sql
+			executeSQL(sql)
+
 
 	finally: 
 		f.close()
@@ -153,7 +165,7 @@ PHENOMENON_TYPE = getLastId()
 
 for filename in glob.glob('../DATA/temp*'):
 
-	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('DATA/bp').strip(".csv"))[1])
+	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
 
 	f = open(filename, 'rt')
@@ -169,19 +181,20 @@ for filename in glob.glob('../DATA/temp*'):
 			OBSERVATION_ID = getLastId()
 
 			######################################
-			# Create an Measurement for binding Quantity to it
-			######################################
-			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + "'" + str(row[0]) + "');"
-			print sql
-			executeSQL(sql)
-			MEASUREMENT_ID = getLastId()
-
-			######################################
 			# Insert the quantities of the measurements
 			######################################
-			sql = "INSERT INTO `Quantity` (`value`,`unit`,`Measurement_idMeasurement`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "'," + str(MEASUREMENT_ID) + ");"
+			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
 			print sql
 			executeSQL(sql)
+			QUANTITY_ID = getLastId()
+
+			######################################
+			# Create an Measurement for binding Quantity to it
+			######################################
+			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
+			print sql
+			executeSQL(sql)
+
 
 	finally: 
 		f.close()
