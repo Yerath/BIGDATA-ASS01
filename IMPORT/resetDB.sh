@@ -10,6 +10,10 @@ mysqladmin -u root -p create starschema
 mysqladmin -u root -p create snowflake
 
 echo "Filling Database"
-mysql -u root -p fowler < SQL/FowlerObservation.sql 
-mysql -u root -p starschema < SQL/StarSchema.sql 
-mysql -u root -p Snowflake < SQL/Snowflake.sql 
+mysql -u root -p fowler < ../SQL/FowlerObservation.sql 
+mysql -u root -p starschema < ../SQL/StarSchema.sql 
+mysql -u root -p Snowflake < ../SQL/Snowflake.sql
+
+python importFowler.py
+python importSnowFlake.py
+python importStarSchema.py 
