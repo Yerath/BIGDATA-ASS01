@@ -48,6 +48,7 @@ try:
 
 	for row in reader:
 		sql = "INSERT INTO `Person` (`name`, `gender`, `birthdate`, `studentnr`) VALUES ('" + str(row[1]) + "', " + row[2] + ", '" + str(row[3]) + "', " + row[4] + ");"
+		print(sql)
 		executeSQL(sql)
 	
 finally: 
@@ -83,6 +84,7 @@ for filename in glob.glob('../DATA/bp*'):
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
+			print(sql)
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
@@ -90,12 +92,14 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
+			print(sql)
 			executeSQL(sql)
 
 			######################################
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[2]) + "','" + str(header[2]) + "');"
+			print(sql)
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
@@ -103,6 +107,7 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
+			print(sql)
 			executeSQL(sql)
 
 			
@@ -133,6 +138,7 @@ for filename in glob.glob('../DATA/hr*'):
 			# Create Observation and store that id
 			######################################
 			executeSQL("INSERT INTO `Observation` (`Person_idPerson`) VALUES (" + str(PERSON_ID) + ");")
+			print(sql)
 			OBSERVATION_ID = getLastId()
 
 			######################################
@@ -140,12 +146,14 @@ for filename in glob.glob('../DATA/hr*'):
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
 			executeSQL(sql)
+			print(sql)
 			QUANTITY_ID = getLastId()
 
 			######################################
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
+			print(sql)
 			executeSQL(sql)
 
 
@@ -176,6 +184,7 @@ for filename in glob.glob('../DATA/temp*'):
 			# Create Observation and store that id
 			######################################
 			executeSQL("INSERT INTO `Observation` (`Person_idPerson`) VALUES (" + str(PERSON_ID) + ");")
+			print(sql)
 			OBSERVATION_ID = getLastId()
 
 			######################################
@@ -183,6 +192,7 @@ for filename in glob.glob('../DATA/temp*'):
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
 			executeSQL(sql)
+			print(sql)
 			QUANTITY_ID = getLastId()
 
 			######################################
