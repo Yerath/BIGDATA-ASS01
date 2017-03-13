@@ -2,7 +2,12 @@ use starschema;
 
 SELECT *
 	FROM Measurement_Facts
-	JOIN Phenomenon_type
-		ON Measurement_Facts.Phenomenon_type_idPhenomenon = Phenomenon_type.idPhenomenon
-	WHERE Phenomenon_Type.name = "blood_pressure"
-		AND Measurement_Facts.timestamp >= '2015/01/01' and Measurement_Facts.timestamp <= '2015/01/30'
+	WHERE phenomenon_type = "blood_pressure"
+		AND timestamp >= '2015/01/01' and timestamp <= '2015/01/30'
+
+INTO OUTFILE '/Users/yerath/tmp/1661152.1.star.csv'
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n';
+;
+    

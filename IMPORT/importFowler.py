@@ -6,6 +6,8 @@ import sys
 import pymysql
 import re
 
+print "Importing Fowler"
+
 HOSTNAME = 'localhost'
 USERNAME = 'root'
 PASSWORD = ''
@@ -46,12 +48,12 @@ try:
 
 	for row in reader:
 		sql = "INSERT INTO `Person` (`name`, `gender`, `birthdate`, `studentnr`) VALUES ('" + str(row[1]) + "', " + row[2] + ", '" + str(row[3]) + "', " + row[4] + ");"
-		print sql
 		executeSQL(sql)
 	
 finally: 
 	f.close()
 
+print "Filling Blood Pressure"
 #########################
 # Blood Pressure
 #########################
@@ -81,7 +83,6 @@ for filename in glob.glob('../DATA/bp*'):
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
-			print sql
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
@@ -89,14 +90,12 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
-			print sql
 			executeSQL(sql)
 
 			######################################
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[2]) + "','" + str(header[2]) + "');"
-			print sql
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
@@ -104,13 +103,13 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
-			print sql
 			executeSQL(sql)
 
 			
 	finally: 
 		f.close()
 
+print "Filling Heart Rate"
 #########################
 # Heart Rate
 #########################
@@ -140,7 +139,6 @@ for filename in glob.glob('../DATA/hr*'):
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
-			print sql
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
@@ -148,13 +146,13 @@ for filename in glob.glob('../DATA/hr*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement` (`Observation_idObservation`,`Phenomenon_Type_idPhenomenon_Type`,`Quantity_idQuanitity`,`timestamp`) VALUES (" + str(OBSERVATION_ID) + "," + str(PHENOMENON_TYPE) + "," + str(QUANTITY_ID) +"," + "'" + str(row[0]) + "');"
-			print sql
 			executeSQL(sql)
 
 
 	finally: 
 		f.close()
 
+print "Filling Temperature"
 #########################
 # Temperature
 #########################
@@ -184,7 +182,6 @@ for filename in glob.glob('../DATA/temp*'):
 			# Insert the quantities of the measurements
 			######################################
 			sql = "INSERT INTO `Quantity` (`value`,`unit`) VALUES ('" + str(row[1]) + "','" + str(header[1]) + "');"
-			print sql
 			executeSQL(sql)
 			QUANTITY_ID = getLastId()
 
