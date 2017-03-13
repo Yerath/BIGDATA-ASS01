@@ -47,6 +47,7 @@ try:
 
 	for row in reader:
 		sql = "INSERT INTO `Person` (`name`, `gender`, `birthdate`, `studentnr`) VALUES ('" + str(row[1]) + "', " + row[2] + ", '" + str(row[3]) + "', " + row[4] + ");"
+		print(sql)
 		executeSQL(sql)
 	
 finally: 
@@ -71,12 +72,14 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement_Facts` (`Person_idPerson`, `value`, `timestamp`, `phenomenon`, `phenomenon_type`,`unit`) VALUES (" + str(PERSON_ID) + ", '" + str(row[1]) +"', '"+ str(row[0]) +"', '', 'blood_pressure', '"+ str(header[1]) +"');"
+			print(sql)
 			executeSQL(sql)
 
 			######################################
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement_Facts` (`Person_idPerson`, `value`, `timestamp`, `phenomenon`, `phenomenon_type`,`unit`) VALUES (" + str(PERSON_ID) + ", '" + str(row[2]) +"', '"+ str(row[0]) +"', '', 'blood_pressure', '"+ str(header[2]) +"');"
+			print(sql)
 			executeSQL(sql)
 
 	finally: 
@@ -86,7 +89,7 @@ print "Filling Heart Rate"
 #########################
 # Heart Rate
 #########################
-for filename in glob.glob('../DATA/bp*'):
+for filename in glob.glob('../DATA/hr*'):
 
 	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
@@ -102,6 +105,7 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement_Facts` (`Person_idPerson`, `value`, `timestamp`, `phenomenon`, `phenomenon_type`,`unit`) VALUES (" + str(PERSON_ID) + ", '" + str(row[1]) +"', '"+ str(row[0]) +"', '', 'heart_rate', 'bpm');"
+			print(sql)
 			executeSQL(sql)
 
 	finally: 
@@ -112,7 +116,7 @@ print "Filling Temperature"
 # Temperature
 #########################
 
-for filename in glob.glob('../DATA/bp*'):
+for filename in glob.glob('../DATA/temp*'):
 
 	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
@@ -128,6 +132,7 @@ for filename in glob.glob('../DATA/bp*'):
 			# Create an Measurement for binding Quantity to it
 			######################################
 			sql = "INSERT INTO `Measurement_Facts` (`Person_idPerson`, `value`, `timestamp`, `phenomenon`, `phenomenon_type`,`unit`) VALUES (" + str(PERSON_ID) + ", '" + str(row[1]) +"', '"+ str(row[0]) +"', '', 'temperature', 'celcius');"
+			print(sql)
 			executeSQL(sql)
 
 	finally: 
