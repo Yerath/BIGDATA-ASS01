@@ -1,4 +1,4 @@
-use starschema;
+use snowflake;
 
 SELECT 
 	count(idmeasurement_facts), 

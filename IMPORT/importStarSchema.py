@@ -86,7 +86,7 @@ print "Filling Heart Rate"
 #########################
 # Heart Rate
 #########################
-for filename in glob.glob('../DATA/bp*'):
+for filename in glob.glob('../DATA/hr*'):
 
 	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]
@@ -112,7 +112,7 @@ print "Filling Temperature"
 # Temperature
 #########################
 
-for filename in glob.glob('../DATA/bp*'):
+for filename in glob.glob('../DATA/temp*'):
 
 	PERSON = str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[0]) + " " + str(re.findall('[A-Z][^A-Z]*',filename.strip('../DATA/bp').strip(".csv"))[1])
 	PERSON_ID = getResult("SELECT `idPerson` FROM `Person` WHERE `name` = '" + str(PERSON) + "'")["idPerson"]

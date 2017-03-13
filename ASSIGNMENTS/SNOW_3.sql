@@ -1,45 +1,42 @@
-use starschema;
+use snowflake;
 
-SELECT 
-	Person.idPerson,
-	Person.name,
-    (
-		SELECT AVG(value)
-		FROM Measurement_Facts 
-		WHERE phenomenon_type = "heart_rate"
-		AND Person_idPerson = Person.idPerson
-		AND timestamp > '2015-01-23'
-        AND timestamp < '2015-01-24'
-    ) as HeartRate_Average,
-	(
-		SELECT AVG(value)
-		FROM Measurement_Facts 
-		WHERE phenomenon_type = "blood_pressure"
-		AND unit = "systolic"
-		AND Person_idPerson = Person.idPerson
-		AND timestamp > '2015-01-23'
-        AND timestamp < '2015-01-24'
-	) as Systolic_Average,
-    (
-		SELECT AVG(value)
-		FROM Measurement_Facts 
-		WHERE phenomenon_type = "blood_pressure"
-		AND unit = "diastolic"
-		AND Person_idPerson = Person.idPerson
-		AND timestamp > '2015-01-23'
-        AND timestamp < '2015-01-24'
-	) as Diastolic_Average
-FROM Measurement_Facts
-JOIN Person ON Measurement_Facts.Person_idPerson = Person.idPerson
+SELECT
+Person.name,
+Person.idPerson,
+timestamp,
+    (SELECT AVG(value)
+        FROM Measurement_Facts
+        WHERE phenomenon_type = 'heart_rate'
+        AND Measurement_Facts.timestamp > '2015-01-23'
+        AND Measurement_Facts.timestamp < '2015-01-24'
+        AND Measurement_Facts.Person_idPerson = Person.idPerson
+    ) AS avgHartslag,
+    (SELECT AVG(value)
+        FROM Measurement_Facts
+        WHERE unit = 'systolic'
+        AND Measurement_Facts.timestamp > '2015-01-23'
+        AND Measurement_Facts.timestamp < '2015-01-24'
+        AND Measurement_Facts.Person_idPerson = Person.idPerson
+    ) AS dystolic,
+    (SELECT AVG(value)
+        FROM Measurement_Facts
+        WHERE unit = 'Diastolic'
+        AND Measurement_Facts.timestamp > '2015-01-23'
+        AND Measurement_Facts.timestamp < '2015-01-24'
+        AND Measurement_Facts.Person_idPerson = Person.idPerson
+    ) AS diastolic
+FROM
+    Measurement_Facts
+JOIN
+    Person
+ON
+    Measurement_Facts.Person_idPerson = Person.idPerson
+where
+    Measurement_Facts.timestamp > '2015-01-23'
+    AND Measurement_Facts.timestamp < '2015-01-24'
+    AND Measurement_Facts.phenomenon_type = 'blood_pressure'
 GROUP BY
-	Person.name, Person.idPerson
+    Person.name,
+    Person.idPerson
 ORDER BY
-	HeartRate_Average ASC
-
-
-INTO OUTFILE '/Users/yerath/tmp/1661152.3.star.csv'
-FIELDS TERMINATED BY ','
-ENCLOSED BY '"'
-LINES TERMINATED BY '\n';
-;
-    
+    avgHartslag ASC
